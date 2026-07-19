@@ -241,34 +241,6 @@ VECTOR/
 
 ---
 
-#  Roadmap
-
-## Phase 1
-
-- AI Voice Assistant
-- Vision
-- Home Automation
-
-## Phase 2
-
-- AI Server
-- Memory
-- Agentic Task Planner
-
-## Phase 3
-
-- Autonomous Mobile Robot
-
-## Phase 4
-
-- Robot Arm
-
-## Phase 5
-
-- Complete Personal Robotics Assistant
-
----
-
 #  Open Source
 
 VECTOR integrates several open-source technologies while contributing original software, integrations, and system architecture.
@@ -291,8 +263,5 @@ This project is released under the MIT License.
 
 ### Building the future of Personal Robotics.
 
-*"Your AI shouldn't just answer questions.*
-
-*It should understand, plan, and act."*
 
 </div>
