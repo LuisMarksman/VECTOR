@@ -1,24 +1,23 @@
 <div align="center">
 
-# 🤖 VECTOR
+#  VECTOR
 
 ### Virtual Engine for Control, Tasks & Operational Robotics
 
 ### The Complete Personal Robotics & AI Assistant
 
-*"One AI. One Home. One Robot. One Intelligent Ecosystem."*
 
 ---
 
 ![Status](https://img.shields.io/badge/Status-In%20Development-orange)
-![Platform](https://img.shields.io/badge/Platform-ESP32%20|%20Raspberry%20Pi%20|%20ROS2-success)
+
 ![License](https://img.shields.io/badge/License-MIT-blue)
 
 </div>
 
 ---
 
-# 🌍 Introduction
+#  Introduction
 
 VECTOR (**Virtual Engine for Control, Tasks & Operational Robotics**) is an open Personal Robotics and Artificial Intelligence platform designed to bridge the gap between digital intelligence and the physical world.
 
@@ -30,7 +29,7 @@ The long-term vision is to build a complete Personal Robotics Operating System c
 
 ---
 
-# 🎯 Vision
+#  Vision
 
 Current AI assistants can answer questions.
 
@@ -54,9 +53,9 @@ VECTOR is designed to become an intelligent system that manages both **digital t
 
 ---
 
-# ✨ Core Capabilities
+#  Core Capabilities
 
-## 🧠 Personal AI Assistant
+##  Personal AI Assistant
 
 - Natural voice conversations
 - Long-term memory
@@ -72,7 +71,7 @@ VECTOR is designed to become an intelligent system that manages both **digital t
 
 ---
 
-## 🏠 Smart Home
+##  Smart Home
 
 - Home automation
 - Appliance control
@@ -85,7 +84,7 @@ VECTOR is designed to become an intelligent system that manages both **digital t
 
 ---
 
-## 👁 Computer Vision
+##  Computer Vision
 
 - Object detection
 - Face recognition
@@ -96,7 +95,7 @@ VECTOR is designed to become an intelligent system that manages both **digital t
 
 ---
 
-## 🤖 Robotics
+##  Robotics
 
 - Autonomous mobile robot
 - Robot arm manipulation
@@ -108,7 +107,7 @@ VECTOR is designed to become an intelligent system that manages both **digital t
 
 ---
 
-## ☁ AI Server
+##  AI Server
 
 VECTOR's intelligence runs through a central AI server responsible for:
 
@@ -123,7 +122,7 @@ VECTOR's intelligence runs through a central AI server responsible for:
 
 ---
 
-# 🏗 System Architecture
+#  System Architecture
 
 ```text
                    USER
@@ -159,7 +158,7 @@ VECTOR's intelligence runs through a central AI server responsible for:
 
 ---
 
-# 🛠 Hardware
+#  Hardware
 
 Current development includes:
 
@@ -206,7 +205,7 @@ Current development includes:
 
 ---
 
-# 🚧 Development Status
+#  Development Status
 
 VECTOR is currently under active development.
 
@@ -222,7 +221,7 @@ Future releases will expand the platform into a complete Personal Robotics ecosy
 
 ---
 
-# 📁 Repository Structure
+#  Repository Structure
 
 ```text
 VECTOR/
@@ -241,7 +240,7 @@ VECTOR/
 
 ---
 
-# 🛣 Roadmap
+#  Roadmap
 
 ## Phase 1
 
@@ -269,7 +268,7 @@ VECTOR/
 
 ---
 
-# 🤝 Open Source
+#  Open Source
 
 VECTOR integrates several open-source technologies while contributing original software, integrations, and system architecture.
 
@@ -279,7 +278,7 @@ See the acknowledgements for more information.
 
 ---
 
-# 📜 License
+#  License
 
 This project is released under the MIT License.
 
@@ -287,7 +286,7 @@ This project is released under the MIT License.
 
 <div align="center">
 
-## ⭐ VECTOR
+##  VECTOR
 
 ### Building the future of Personal Robotics.
 
