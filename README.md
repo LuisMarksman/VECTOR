@@ -162,9 +162,10 @@ VECTOR's intelligence runs through a central AI server responsible for:
 
 Current development includes:
 
+- Raspberry Pi
+- Arduino Q
 - ESP32
 - XIAO Sense
-- Raspberry Pi
 - AI Server
 - Autonomous Mobile Robot
 - Robot Arm
@@ -176,7 +177,7 @@ Current development includes:
 
 ---
 
-# 💻 Software Stack
+#  Software Stack
 
 ## AI
 
