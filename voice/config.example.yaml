@@ -1,0 +1,15 @@
+# VECTOR voice client — example configuration.
+# These map to the VECTOR_* environment variables read by config.py.
+# The "console" backends need no audio hardware and are the defaults.
+
+server_url: http://localhost:8000
+wake_word: vector
+session_id: voice
+
+backends:
+  # console | openwakeword | porcupine
+  wake: console
+  # console | whisper
+  stt: console
+  # console | pyttsx3 | piper
+  tts: console

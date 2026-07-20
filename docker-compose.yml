@@ -1,0 +1,63 @@
+# ===========================================================================
+# VECTOR — local development stack
+# ---------------------------------------------------------------------------
+# Brings up the message bus (MQTT) and the AI server. Vision and voice are
+# opt-in profiles because they usually need host cameras / microphones.
+#
+#   docker compose up mqtt server           # core brain + bus
+#   docker compose --profile vision up      # add the vision worker
+# ===========================================================================
+
+services:
+  mqtt:
+    image: eclipse-mosquitto:2
+    container_name: vector-mqtt
+    restart: unless-stopped
+    ports:
+      - "1883:1883"   # MQTT
+      - "9001:9001"   # MQTT over WebSockets
+    volumes:
+      - ./integrations/mqtt/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - mqtt-data:/mosquitto/data
+      - mqtt-log:/mosquitto/log
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: vector-server
+    restart: unless-stopped
+    depends_on:
+      - mqtt
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      # Inside the compose network the broker is reachable by service name.
+      VECTOR_MQTT_HOST: mqtt
+    volumes:
+      - ./data:/app/data
+
+  vision:
+    build:
+      context: ./vision
+      dockerfile: Dockerfile
+    container_name: vector-vision
+    profiles: ["vision"]
+    restart: unless-stopped
+    depends_on:
+      - mqtt
+      - server
+    env_file:
+      - .env
+    environment:
+      VECTOR_MQTT_HOST: mqtt
+      VECTOR_SERVER_URL: http://server:8000
+    # Uncomment to grant access to a host camera (Linux):
+    # devices:
+    #   - "/dev/video0:/dev/video0"
+
+volumes:
+  mqtt-data:
+  mqtt-log:

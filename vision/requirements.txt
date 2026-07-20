@@ -1,0 +1,15 @@
+# --- Required ------------------------------------------------------------
+httpx>=0.27           # publish detections to the VECTOR server
+
+# --- Optional real backends ---------------------------------------------
+# The default "mock" camera + detector need none of these.
+#
+# Camera + arrays:
+#   opencv-python>=4.9
+#   numpy>=1.26
+# Object detection:
+#   ultralytics>=8.1          # YOLOv8/v11
+# Face recognition:
+#   face-recognition>=1.3
+# OCR:
+#   pytesseract>=0.3          # needs the Tesseract system package

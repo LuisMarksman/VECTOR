@@ -1,0 +1,8 @@
+# Local secrets — copied from config.example.h, contains WiFi/MQTT credentials.
+**/include/config.h
+**/config.h
+
+# PlatformIO build output
+.pio/
+.pioenvs/
+.piolibdeps/

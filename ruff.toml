@@ -1,0 +1,8 @@
+# Root ruff config for Python components outside the server package
+# (voice/, vision/, integrations/). The server has its own config in
+# server/pyproject.toml; ruff uses the nearest config per file.
+line-length = 100
+target-version = "py311"
+
+[lint]
+select = ["E", "F", "I", "UP", "B", "W"]

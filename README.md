@@ -222,22 +222,57 @@ Future releases will expand the platform into a complete Personal Robotics ecosy
 
 ---
 
+#  Quick Start
+
+Get the VECTOR brain running locally — **no hardware or API keys required**. It
+ships with offline-friendly mock backends so the whole stack runs out of the box.
+
+```bash
+git clone https://github.com/LuisMarksman/VECTOR.git
+cd VECTOR
+make env            # create .env from the template
+make setup          # install server + voice + vision dependencies
+make server         # start the API at http://localhost:8000
+```
+
+Ask VECTOR to do something:
+
+```bash
+curl -X POST http://localhost:8000/assistant/command \
+  -H 'content-type: application/json' \
+  -d '{"text": "turn on the living room lights and vacuum the floor"}'
+```
+
+VECTOR plans the request, splits it into steps, routes each to the right
+capability (home automation, mobile robot, arm, …) and acts on it.
+
+Prefer containers? `make up` starts the MQTT broker and server with Docker. See
+**[docs/getting-started.md](docs/getting-started.md)** for the full walkthrough
+and **[docs/architecture.md](docs/architecture.md)** for how it all fits together.
+
+---
+
 #  Repository Structure
 
 ```text
 VECTOR/
-
-├── assets/
-├── docs/
-├── firmware/
-├── hardware/
-├── integrations/
-├── robotics/
-├── server/
-├── vision/
-├── voice/
+├── server/          # FastAPI AI server — the reasoning & orchestration brain
+├── voice/           # Voice assistant: wake word → STT → server → TTS
+├── vision/          # Computer vision: detection, faces, tracking, OCR
+├── robotics/        # ROS2 packages: mobile base, arm, perception, MQTT bridge
+├── firmware/        # ESP32 / XIAO Sense embedded nodes (PlatformIO)
+├── integrations/    # MQTT broker config + smart-home bridges
+├── hardware/        # Bill of materials & wiring notes
+├── docs/            # Architecture, getting-started, MQTT contract, roadmap
+├── assets/          # Logos, diagrams, media
+├── docker-compose.yml
+├── Makefile
 └── README.md
 ```
+
+Each top-level directory is an independent component that communicates over the
+MQTT message bus and the server's HTTP API. Start with
+[docs/architecture.md](docs/architecture.md) to see how they connect.
 
 ---
 
