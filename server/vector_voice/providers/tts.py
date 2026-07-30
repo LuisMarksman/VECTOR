@@ -5,9 +5,15 @@ the session layer only ever sees one shape of data and swapping engines is a
 config change.
 
   edge   - Microsoft Edge read-aloud voices. Free, no signup, no key, genuinely
-           good neural quality. Unofficial, so treat it as best-effort.
-  gemini - Gemini TTS. Costs credits, returns PCM directly (no ffmpeg hop),
-           and takes natural-language style direction.
+           good neural quality, and it streams. The default.
+           Unofficial, so treat it as best-effort.
+  gemini - Costs credits, returns PCM directly (no ffmpeg hop), takes
+           natural-language style direction -- but it is NOT streaming and it
+           is slow. Measured July 2026 on gemini-2.5-flash-preview-tts:
+           1.9 s to synthesise "Yes." and 3.1 s for a short sentence.
+           gemini-3.1-flash-tts-preview was worse (2.7 s / 9.2 s). That is a
+           per-request floor you cannot hide behind sentence pipelining, so
+           this is for pre-generated audio, not conversation.
   piper  - Fully local. No network, no cost, runs fine on a Pi 5. The offline
            fallback and the thing to use if the Edge endpoint ever dies.
 """
@@ -72,9 +78,11 @@ class EdgeTTS:
 
 
 class GeminiTTS:
-    """Gemini TTS returns base64 PCM16 @ 24 kHz in one response (not streamed),
-    so latency is bounded by the whole sentence rather than the first syllable.
-    Keep sentences short."""
+    """Returns base64 PCM16 @ 24 kHz in a single response -- there is no partial
+    output, so nothing can be played until the whole sentence is synthesised.
+    See the module docstring for measured latency; it is too slow to converse
+    with. Kept because it is the right tool for style-directed or
+    pre-generated audio."""
 
     NATIVE_RATE = 24000
 

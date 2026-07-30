@@ -50,19 +50,36 @@ resistor networks differ between vendors.
 
 ### Optional, wired only if you have the parts
 
+### 0.96" SSD1306 OLED (4-pin I2C)
+
+| OLED | ESP32-S3 |
+|---|---|
+| GND | GND |
+| VCC | 3V3 |
+| SCL | **GPIO 42** |
+| SDA | **GPIO 41** |
+
+The I2C address is fixed at `0x3C` in `compact_wifi_board.cc`, which is what
+these 4-pin modules ship with.
+
+⚠️ A 0.96" module is **128×64**, but the board defaults to 128×32. Set
+`OLED_SSD1306_128X64` in menuconfig (below) or the bottom half of the panel
+stays dead and everything renders squashed into the top strip.
+
+Running without an OLED is also fine — `esp_lcd_panel_init()` fails the I2C
+transaction, the board logs `Failed to initialize display`, and falls back to
+`NoDisplay()`. But you must still *select* a type, or `config.h` hits
+`#error "OLED display type is not selected"` at compile time.
+
+### Other pins, wired only if you have the parts
+
 | Function | GPIO |
 |---|---|
 | Onboard LED | 48 |
 | Boot button (push-to-talk) | 0 |
 | Touch button | 47 |
 | Volume up / down | 40 / 39 |
-| OLED SDA / SCL | 41 / 42 |
 | Lamp (the MCP demo tool) | 18 |
-
-**No OLED is fine.** `esp_lcd_panel_init()` fails the I2C transaction, the board
-logs `Failed to initialize display` and falls back to `NoDisplay()`. You still
-have to *select* an OLED type in menuconfig though, or `config.h` hits
-`#error "OLED display type is not selected"` at compile time. Leave the default.
 
 None of these pins collide with octal PSRAM (which consumes GPIO 33–37) or with
 native USB (GPIO 19/20).
@@ -83,7 +100,7 @@ what most two-USB-C S3 boards are. But:
 
 | Your board | What to do |
 |---|---|
-| **N16R8** (16 MB flash, 8 MB octal PSRAM) | Nothing. Defaults are correct. |
+| **N16R8** (16 MB flash, 8 MB octal PSRAM) — *this is what you have* | Nothing. Defaults are correct. |
 | **N8R8** (8 MB flash, 8 MB octal) | Set flash size to 8 MB + `partitions/v2/8m.csv` (below) |
 | **N8R2 / N16R2** (quad PSRAM) | Change to `CONFIG_SPIRAM_MODE_QUAD=y` |
 | **No PSRAM** | AFE wake word is impossible — set `WAKE_WORD_DISABLED` and use the boot button |
@@ -124,6 +141,7 @@ Four settings under **`Xiaozhi Assistant`**:
 | Board Type | `Bread Compact WiFi` (already the S3 default) |
 | Default OTA URL | `http://192.168.1.50:8000/xiaozhi/ota/` ← your laptop's LAN IP |
 | Default Language | English (ships as Chinese) |
+| OLED Type | **`SSD1306 128*64`** (default is 128×32 — wrong for a 0.96" panel) |
 | Wake Word Implementation Type | `Wakenet model with AFE` |
 
 Then the wake word model itself, under **`ESP Speech Recognition`**. The default

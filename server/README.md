@@ -86,18 +86,18 @@ hostname -I | awk '{print $1}'
 
 ### Pick a live Gemini model first
 
-`gemini-2.5-flash` started returning 404 in July 2026, ahead of its announced
-October shutdown. Don't trust any hardcoded default, including ours:
+Model availability differs per key and Google retires models on short notice, so
+ask your key rather than trusting any default — including ours:
 
 ```bash
 python tools/list_models.py
 ```
 
-Set `GEMINI_MODEL` to something that actually came back. For a voice assistant
-the turns are tiny (a few hundred tokens each), so the cheap tier is the right
-call — `gemini-3.5-flash-lite` at $0.30/$2.50 per Mtok works out to roughly
-₹0.08 per exchange, i.e. ~12,000 exchanges from ₹1000 of credit. Move up to
-`gemini-3.6-flash` only when you start doing real planning.
+For a voice assistant the turns are tiny (a few hundred tokens each), so the
+cheap tier is right. `gemini-3.5-flash-lite` at $0.30/$2.50 per Mtok is roughly
+₹0.08 per exchange — about 12,000 exchanges from ₹1000 of credit — and measures
+**~1.1 s to the first spoken sentence**. Move up to `gemini-3.6-flash` only when
+you start doing real planning.
 
 ### Start it
 
@@ -196,11 +196,26 @@ no certificates to wrangle. Add TLS only when the server leaves your network.
 | `DEEPGRAM_LANGUAGE` | `multi` handles Hindi/English code-switching; `en-IN` pins to English |
 | `GEMINI_MODEL` | anything `tools/list_models.py` reports |
 
-**On TTS:** `edge` is the recommended starting point — Microsoft's neural voices
-at no cost and with no account, including `en-IN-NeerjaNeural`. It is an
-unofficial endpoint, so treat it as best-effort: if it ever goes away, switch
-`TTS_PROVIDER` and nothing else changes. `piper` is the insurance policy, since
-it runs entirely on the Pi with no network at all.
+**On TTS — use `edge`, and it is not just about cost.** Gemini TTS returns the
+whole utterance in one non-streaming response, and measured against the live API
+in July 2026 that costs:
+
+| Model | "Yes." | "That would be New Delhi!" |
+|---|---|---|
+| `gemini-2.5-flash-preview-tts` | 1.90 s | 3.07 s |
+| `gemini-3.1-flash-tts-preview` | 2.74 s | 9.19 s |
+
+That is a floor per request, not a warm-up, and sentence pipelining cannot hide
+it — the first sentence still has to finish before anything plays. Stack it on
+~1.1 s of LLM and you are waiting three to four seconds to hear "Yes."
+
+`edge` streams, costs nothing, needs no account, and has `en-IN-NeerjaNeural`.
+It is an unofficial endpoint, so treat it as best-effort — if it ever goes away,
+change `TTS_PROVIDER` and nothing else. `piper` is the insurance policy: fully
+local, so it cannot be taken away and has no network latency at all.
+
+Keep `gemini` for style-directed or pre-generated audio, where 3 s does not
+matter.
 
 List Edge voices with `edge-tts --list-voices`.
 

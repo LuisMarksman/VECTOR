@@ -73,9 +73,9 @@ class Config:
 
     # --- LLM (Gemini) ---------------------------------------------------
     gemini_api_key: str = field(default_factory=lambda: _env("GEMINI_API_KEY"))
-    # NOTE: gemini-2.5-flash began returning 404 in July 2026, ahead of its
-    # announced October shutdown. Run tools/list_models.py to see what your key
-    # can actually reach, then set this.
+    # Model availability varies per key and Google retires models on short
+    # notice, so run tools/list_models.py rather than trusting this default.
+    # Verified working July 2026: ~1.1 s to first sentence.
     gemini_model: str = field(
         default_factory=lambda: _env("GEMINI_MODEL", "gemini-3.5-flash-lite")
     )
@@ -110,8 +110,12 @@ class Config:
     )
     edge_tts_rate: str = field(default_factory=lambda: _env("EDGE_TTS_RATE", "+0%"))
     edge_tts_pitch: str = field(default_factory=lambda: _env("EDGE_TTS_PITCH", "+0Hz"))
+    # Measured July 2026: this is the fastest Gemini TTS model, and it still
+    # takes ~1.9 s for a one-word reply and ~3.1 s for a short sentence. That is
+    # a floor, not a warm-up. Fine for pre-generated audio, too slow to
+    # converse with -- see tts.py.
     gemini_tts_model: str = field(
-        default_factory=lambda: _env("GEMINI_TTS_MODEL", "gemini-2.5-flash-tts")
+        default_factory=lambda: _env("GEMINI_TTS_MODEL", "gemini-2.5-flash-preview-tts")
     )
     gemini_tts_voice: str = field(default_factory=lambda: _env("GEMINI_TTS_VOICE", "Kore"))
     piper_binary: str = field(default_factory=lambda: _env("PIPER_BINARY", "piper"))
