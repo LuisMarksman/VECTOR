@@ -1,5 +1,5 @@
 /*
- * VECTOR - ESP32 RC Car (4WD)
+ * VECTOR - Rover (ESP32 4WD RC car prototype)
  * ---------------------------------------------------------------
  * Board : ESP32-DevKit-V1 (ESP32-WROOM-32)
  * Motors: 4x 12V DC geared motor, 100 RPM, 70 mm wheel
