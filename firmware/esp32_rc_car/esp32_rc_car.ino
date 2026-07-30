@@ -56,32 +56,38 @@ WebServer server(80);
 #define BL_INN   18   // IN4  -> OUT4 (back-left GND wire)
 
 // PWM config (8-bit -> duty 0..255). 200 ~= 78% keeps a ~16V pack near the 12V rating.
+// ESP32 core 2.x uses channel-based LEDC: one channel per EN pin.
 const int   PWM_FREQ = 1000;
 const int   PWM_RES  = 8;
 int         motorSpeed = 200;
 
+#define FR_CH 0   // LEDC channel for front-right EN
+#define FL_CH 1   // LEDC channel for front-left  EN
+#define BR_CH 2   // LEDC channel for back-right  EN
+#define BL_CH 3   // LEDC channel for back-left   EN
+
 // ---------------- Low level motor control ----------------
 // dir: +1 forward (drive the + terminal HIGH), -1 reverse, 0 = coast/stop
-void driveMotor(int enPin, int inPos, int inNeg, int dir, int speed) {
+void driveMotor(int enCh, int inPos, int inNeg, int dir, int speed) {
   if (dir > 0) {           // forward
     digitalWrite(inPos, HIGH);
     digitalWrite(inNeg, LOW);
-    ledcWrite(enPin, speed);
+    ledcWrite(enCh, speed);
   } else if (dir < 0) {    // reverse
     digitalWrite(inPos, LOW);
     digitalWrite(inNeg, HIGH);
-    ledcWrite(enPin, speed);
+    ledcWrite(enCh, speed);
   } else {                 // stop
     digitalWrite(inPos, LOW);
     digitalWrite(inNeg, LOW);
-    ledcWrite(enPin, 0);
+    ledcWrite(enCh, 0);
   }
 }
 
-void frontRight(int dir) { driveMotor(FR_EN, FR_INP, FR_INN, dir, motorSpeed); }
-void frontLeft (int dir) { driveMotor(FL_EN, FL_INP, FL_INN, dir, motorSpeed); }
-void backRight (int dir) { driveMotor(BR_EN, BR_INP, BR_INN, dir, motorSpeed); }
-void backLeft  (int dir) { driveMotor(BL_EN, BL_INP, BL_INN, dir, motorSpeed); }
+void frontRight(int dir) { driveMotor(FR_CH, FR_INP, FR_INN, dir, motorSpeed); }
+void frontLeft (int dir) { driveMotor(FL_CH, FL_INP, FL_INN, dir, motorSpeed); }
+void backRight (int dir) { driveMotor(BR_CH, BR_INP, BR_INN, dir, motorSpeed); }
+void backLeft  (int dir) { driveMotor(BL_CH, BL_INP, BL_INN, dir, motorSpeed); }
 
 void rightSide(int dir) { frontRight(dir); backRight(dir); }
 void leftSide (int dir) { frontLeft(dir);  backLeft(dir);  }
@@ -130,8 +136,13 @@ void setup() {
                    BR_INP, BR_INN, BL_INP, BL_INN };
   for (int p : inPins) pinMode(p, OUTPUT);
 
-  int enPins[] = { FR_EN, FL_EN, BR_EN, BL_EN };
-  for (int p : enPins) ledcAttach(p, PWM_FREQ, PWM_RES);
+  // LEDC (core 2.x): configure a channel, then bind it to the EN pin.
+  int enPins[]     = { FR_EN, FL_EN, BR_EN, BL_EN };
+  int enChannels[] = { FR_CH, FL_CH, BR_CH, BL_CH };
+  for (int i = 0; i < 4; i++) {
+    ledcSetup(enChannels[i], PWM_FREQ, PWM_RES);
+    ledcAttachPin(enPins[i], enChannels[i]);
+  }
 
   stopMotors();
 

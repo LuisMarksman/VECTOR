@@ -3,6 +3,9 @@
 Board: **ESP32-DevKit-V1** · 4× 12V DC geared motor (100 RPM, 70 mm wheel) ·
 2× **L298N** motor drivers · Battery: **4× 18650 in series** (~14.8V nom / 16.8V full).
 
+> Sketch uses the **ESP32 Arduino core 2.x** LEDC API (`ledcSetup` /
+> `ledcAttachPin`). Tested target: "ESP32 Dev Module" on core 2.0.17.
+
 ## Motor → L298N mapping
 
 | L298N        | Channel        | Motor        | Motor GND wire | Other wire |
