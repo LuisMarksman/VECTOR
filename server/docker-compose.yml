@@ -1,0 +1,20 @@
+services:
+  vector-voice:
+    build: .
+    image: vector-voice:latest
+    container_name: vector-voice
+    restart: unless-stopped
+    # host networking keeps mDNS/LAN discovery simple and avoids a NAT hop on
+    # the audio path. On the Pi this is the sane default; swap to a published
+    # port if you need isolation.
+    network_mode: host
+    env_file:
+      - .env
+    volumes:
+      # Only needed for TTS_PROVIDER=piper.
+      - ./models:/models:ro
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
