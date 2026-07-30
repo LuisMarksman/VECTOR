@@ -172,18 +172,14 @@ expecting it to find the new host.
 
 ## Point the ESP32 at this server
 
-In the xiaozhi-esp32 checkout:
+Wiring, menuconfig settings and bring-up order are in
+[`../firmware/README.md`](../firmware/README.md). The short version, in the
+xiaozhi-esp32 checkout:
 
 ```bash
-idf.py menuconfig
-```
-
-- `Xiaozhi Assistant` → `Default OTA URL` → `http://192.168.1.50:8000/xiaozhi/ota/`
-- `Xiaozhi Assistant` → `Default Language` → English (it ships Chinese)
-- Wake word: `USE_AFE_WAKE_WORD` (needs ESP32-S3 + PSRAM)
-
-```bash
-idf.py set-target esp32s3 && idf.py build flash monitor
+idf.py set-target esp32s3
+idf.py menuconfig   # Xiaozhi Assistant -> Default OTA URL -> http://<LAN-IP>:8000/xiaozhi/ota/
+idf.py build flash monitor
 ```
 
 Plain `ws://` and `http://` are fine on a LAN and make development far easier —
